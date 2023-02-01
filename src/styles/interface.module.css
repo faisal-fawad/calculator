@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 5px 0;
+  font-size: 20px;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  min-height: 50px;
+}
+
+.output {
+  height: 100px;
+  margin: 5px 0 0 0;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
+  text-align: center;
+}
+
+.buttons {
+  display: inline-flex;
+  border: none;
+  justify-content: stretch;
+}
+
+.buttons button {
+  margin: 0;
+  padding: 5px;
+  border: 1px solid black;
+  background: white;
+  border-radius: 5px;
+}
+
+.buttons div {
+  width: 10px;
+  visibility: hidden;
+}
+
+.sum_button {
+  flex-grow: 1;
+  font-size: 22.5px;
+}
+
+.calc_button {
+  flex-grow: 3;
+  font-weight: 700;
+  font-size: 15px;
+}

@@ -3,15 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="%PUBLIC_URL%/globals.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/mathquill/mathquill.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
       content="A calculator targeting specific functions"
     />
     <title>Calculator</title>
+
+    <!-- Importing mathquill -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="%PUBLIC_URL%/mathquill/mathquill.js"></script>
+    <script>
+      var MQ = MathQuill.getInterface(2);
+    </script>
+    <script id="calculator"></script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>You need to enable JavaScript to run this app</noscript>
     <div id="root"></div>
   </body>
 </html>
