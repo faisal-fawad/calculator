@@ -3,53 +3,63 @@
   flex-direction: column;
 }
 
-.input {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 0 5px 0;
-  font-size: 20px;
-  padding: 5px;
-  border: 1px solid black;
-  border-radius: 5px;
-  min-height: 50px;
-}
-
-.output {
-  height: 100px;
-  margin: 5px 0 0 0;
-  padding: 5px;
-  border: 1px solid black;
-  border-radius: 5px;
-  background: white;
-  text-align: center;
-}
-
 .buttons {
   display: inline-flex;
-  border: none;
-  justify-content: stretch;
+  align-content: stretch;
 }
 
 .buttons button {
   margin: 0;
-  padding: 5px;
+  padding: 5px 10px;
+  font-size: 20px;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+}
+
+.buttons button:hover {
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.input_container {
+  display: inline-flex;
   border: 1px solid black;
-  background: white;
   border-radius: 5px;
 }
 
-.buttons div {
-  width: 10px;
-  visibility: hidden;
+.input {
+  display: inline-flex;
+  align-items: center;
+  font-size: 20px;
+  padding: 5px;
+  border: none;
+  flex-grow: 2;
+  overflow: auto;
 }
 
-.sum_button {
+.input_container .buttons button {
+  border-left: 1px solid black;
+}
+
+/* Go! button */
+.input_container .buttons button:nth-child(2), 
+.output_container .buttons button {
+  font-size: 17.5px;
+}
+
+.output {
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.output_container .buttons {
+  display: flex;
+  border: 1px solid black;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.output_container .buttons button {
   flex-grow: 1;
-  font-size: 22.5px;
-}
-
-.calc_button {
-  flex-grow: 3;
-  font-weight: 700;
-  font-size: 15px;
 }

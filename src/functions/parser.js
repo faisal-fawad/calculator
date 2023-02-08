@@ -3,12 +3,12 @@ export default function Parser(string) {
   // Variables / Constants
   const exp = '\\(([^)(]*(?:\\([^)(]*(?:\\([^)(]*(?:\\([^)(]*\\)[^)(]*)*\\)[^)(]*)*\\)[^)(]*)*)\\)'
   const symbols = string.match(/\\(sum)/g);
-  var re
+  var re;
   var i; 
   var Objects = []
 
   if (!string) {
-    return "Empty string";
+    return "Error parsing expression";
   }
 
   // Converts latex to code; used for calculations
@@ -16,14 +16,16 @@ export default function Parser(string) {
     "frac": ['\\\\(?:frac)' + exp + exp, '(($1) / ($2))'],
     "cdot": ['\\\\(?:cdot)', '*'],
     "log": ['\\\\(?:log)_' + exp + exp, '(Math.log($2) / Math.log($1))'],
-    "ln": ['\\\\(?:ln)' + exp, '(Math.log($1) / Math.log(Math.exp(1)))']
+    "ln": ['\\\\(?:ln)' + exp, '(Math.log($1) / Math.log(Math.exp(1)))'],
+    "pi": ['\\\\(?:pi)', 'Math.PI']
   }
   const checks = Object.keys(Formatter);
   const alternate = ["sin", "cos", "tan"]
 
   // Cleaning up latex string before conversion
   string = string.replaceAll("\\left", "").replaceAll("\\right", "").replaceAll("{", "(").replaceAll("}", ")");
-  string = string.replaceAll(/([_^])([A-Za-z0-9])/g, "$1($2)").replaceAll(/([0-9]+)([_^])/g, "($1)$2").replaceAll(/([A-Za-z0-9]+)([\\^])/g, "($1)$2");
+  string = string.replaceAll(/([_^])([A-Za-z0-9])/g, "$1($2)").replaceAll(/([0-9]+)([_^])/g, "($1)$2").replaceAll(/([A-Za-z0-9]+)([\^])/g, "($1)$2"); // Adding parentheses
+  string = string.replaceAll(/([0-9])(?!\\cdot)(\\?[A-Za-z])/g, "$1 \\cdot $2"); // Converting implictly defined multiplication to explicit (eg. 5i -> 5 \cdot i; (exp)i -> )
 
   // Adding base to log function (if not provided)
   re = new RegExp('\\\\(?:log)' + exp, "g");
@@ -44,13 +46,14 @@ export default function Parser(string) {
   }
 
   // Other conversions (mathemtical functions with no backslash)
-  re = new RegExp('([^_])' + exp + '\\^' + exp, "g");
-  string = string.replaceAll(re, '$1Math.pow($2, $3)');
+  re = new RegExp('^(?![_]$)' + exp + '\\^' + exp, "g");
+  string = string.replaceAll(re, 'Math.pow($1, $2)');
 
-  // Getting all sums
+  // Getting all the sums and creating objects for them; as well as defining related variables
   re = new RegExp('\\\\(sum)_' + exp + '\\^' + exp + exp, "g");
   var nested;
   var outermost;
+  var outerCount = 0;
   var matches = [...string.matchAll(re)];
   var originalMatches = matches.map(element => element[0]);
 
@@ -71,7 +74,8 @@ export default function Parser(string) {
       // Checks if a summation is the outermost summation in a chain of sums 
       if (originalMatches.includes(matches[i][0])) {
         outermost = true
-        string = string.replace(matches[i][0], "ans" + i);
+        string = string.replace(matches[i][0], `answers[${outerCount}]`);
+        outerCount++;
       }
       else {
         outermost = false
@@ -81,16 +85,16 @@ export default function Parser(string) {
     }
   }
 
-  // Check for making sure all parentheses contain an expression
+  // Checks to make sure all parentheses contain an expression (they're not empty)
   re = new RegExp(exp, "g");
   const checker = [...string.matchAll(re)]
   if (!checker.every(element => element[1] !== "")) {
     return "Error parsing expression";
   }
 
-  // If the number of \sum does not match with the Objects created, a parsing error must have occured
+  // If the number of \sum does not match with the number of objects created, a parsing error must have occured
   if (symbols && Objects.length !== symbols.length) {
-    return "Summations formatted wrong (show correct format...)";
+    return "Summations formatted incorrectly";
   }
 
   return [string, Objects];
