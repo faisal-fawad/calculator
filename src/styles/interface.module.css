@@ -12,19 +12,26 @@
   margin: 0;
   padding: 5px 10px;
   font-size: 20px;
-  background: transparent;
+  background: var(--green-color);
+  color: var(--neutral-color);
   cursor: pointer;
   border: none;
+  transition: background-color .2s ease;
 }
 
 .buttons button:hover {
-  background: rgba(0, 0, 0, 0.01);
+  background-color: var(--green-hover-color);
+  transition: background-color .2s ease;
+}
+
+.input_container, .output {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .input_container {
   display: inline-flex;
-  border: 1px solid black;
   border-radius: 5px;
+  overflow: hidden;
 }
 
 .input {
@@ -32,34 +39,73 @@
   align-items: center;
   font-size: 20px;
   padding: 5px;
+  background: var(--neutral-color);
   border: none;
   flex-grow: 2;
+  max-height: 150px;
   overflow: auto;
 }
 
-.input_container .buttons button {
-  border-left: 1px solid black;
+/* Sum button */
+.input_container .buttons button:first-child {
+  background-color: var(--red-color);
 }
 
-/* Go! button */
+.input_container .buttons button:first-child:hover {
+  background-color: var(--red-hover-color);
+}
+
+/* Buttons with text */
 .input_container .buttons button:nth-child(2), 
 .output_container .buttons button {
   font-size: 17.5px;
 }
 
 .output {
-  padding: 5px;
-  border: 1px solid black;
+  padding: 10px;
+  background: var(--code-color);
+  color: var(--neutral-color);
   border-radius: 5px;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.output pre {
+  margin: 0;
 }
 
 .output_container .buttons {
   display: flex;
-  border: 1px solid black;
-  margin: 5px 0;
-  border-radius: 5px;
+  margin: 10px 0;
+  overflow: hidden;
 }
 
 .output_container .buttons button {
   flex-grow: 1;
+  border-radius: 5px;
+}
+
+/* Overflow scrollbar */
+.output::-webkit-scrollbar, .input::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.output::-webkit-scrollbar-track, .input::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 5px;
+}
+
+.output::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+.input::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: none;
+}
+
+.output::-webkit-scrollbar-corner, .input::-webkit-scrollbar-corner {
+  background: transparent;
 }

@@ -8,7 +8,7 @@ export default function Parser(string) {
   var Objects = []
 
   if (!string) {
-    return "Error parsing expression";
+    return -1;
   }
 
   // Converts latex to code; used for calculations
@@ -23,9 +23,10 @@ export default function Parser(string) {
   const alternate = ["sin", "cos", "tan"]
 
   // Cleaning up latex string before conversion
-  string = string.replaceAll("\\left", "").replaceAll("\\right", "").replaceAll("{", "(").replaceAll("}", ")");
+  string = string.replaceAll("\\left", "").replaceAll("\\right", "").replaceAll("{", "(").replaceAll("}", ")"); // Removing specific bracket format
   string = string.replaceAll(/([_^])([A-Za-z0-9])/g, "$1($2)").replaceAll(/([0-9]+)([_^])/g, "($1)$2").replaceAll(/([A-Za-z0-9]+)([\^])/g, "($1)$2"); // Adding parentheses
-  string = string.replaceAll(/([0-9])(?!\\cdot)(\\?[A-Za-z])/g, "$1 \\cdot $2"); // Converting implictly defined multiplication to explicit (eg. 5i -> 5 \cdot i; (exp)i -> )
+  string = string.replaceAll(/([0-9])(?!\\cdot)(\\?[A-Za-z])/g, "$1 \\cdot $2"); // Converting implictly defined multiplication to explicit (eg. 5i -> 5 \cdot i)
+  string = string.replaceAll(/\\\s+/g, ""); // Removing backslashes occuring from spaces
 
   // Adding base to log function (if not provided)
   re = new RegExp('\\\\(?:log)' + exp, "g");
@@ -46,7 +47,7 @@ export default function Parser(string) {
   }
 
   // Other conversions (mathemtical functions with no backslash)
-  re = new RegExp('^(?![_]$)' + exp + '\\^' + exp, "g");
+  re = new RegExp( exp + '\\^' + exp + '(?!' + exp + ')', "g");
   string = string.replaceAll(re, 'Math.pow($1, $2)');
 
   // Getting all the sums and creating objects for them; as well as defining related variables

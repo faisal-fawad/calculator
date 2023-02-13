@@ -5,7 +5,7 @@ import styles from '../styles/interface.module.css'
 export default function Interface() {
   var MQ = window.MQ;
   const field = useRef();
-  const [buttons, setButtons] = useState([]);
+  const [buttons, setButtons] = useState([<button key={-1}>Result</button>]);
   const [output, setOutput] = useState("Click calculate!");
 
   // On mount
@@ -20,6 +20,10 @@ export default function Interface() {
   // Handles calculations
   function handler() {
     let res = Generator(field.current.latex());
+    if (res === -1) {
+      return -1;
+    }
+
     let buttons = [];
 
     for (var i = 0; i < res.length; i++) {
@@ -32,7 +36,7 @@ export default function Interface() {
       // No data indicates a border
       else {
         buttons.push(
-          <div style={{width: "1px", background: "black", cursor: "pointer"}}></div>
+          <div key={i} style={{width: "5px", background: "transparent", cursor: "pointer"}}></div>
         )
       }
     }
@@ -46,7 +50,7 @@ export default function Interface() {
         <div className={styles.input} id="input"></div>
         <div className={styles.buttons}>
           <button id="sum" onClick={() => field.current.write('\\sum_{i=0}^{n}\\left(i\\right)')}>{'\\sum_{i=0}^{n}(i)'}</button>
-          <button onClick={() => handler()}>Go</button>
+          <button onClick={() => handler()}>{'Go'}</button>
         </div>
       </div>
       <div className={styles.output_container}>

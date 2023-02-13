@@ -2,10 +2,6 @@ import Parser from "./parser";
 var error;
 
 export default function Generator(string) {
-  // Variables / Constants
-  const exp = '\\(([^)(]*(?:\\([^)(]*(?:\\([^)(]*(?:\\([^)(]*\\)[^)(]*)*\\)[^)(]*)*\\)[^)(]*)*)\\)';
-  var re = new RegExp('\\\\(sum)_' + exp + '\\^' + exp, "g");
-
   // Handles errors involving the script
   error = null;
   window.onerror = function (msg) {
@@ -16,6 +12,10 @@ export default function Generator(string) {
 
   // Running parser and defining sorrounding variables
   var res = Parser(string);
+  if (res === -1) {
+    return -1;
+  }
+  
   var Objects; var stringScript;
   var displays = [{name: "Result"}];
 
@@ -30,7 +30,7 @@ export default function Generator(string) {
   }
 
   // Checks if the following calculation contains summations
-  var main = ""; var header = "var answers = [];\nvar operations = [];\n"; 
+  var main = ""; var header = "var answers = [], operations = [];\n"; 
   var converterOutput;
   if (Objects.length) {
     var outer = Objects.filter(element => element["isOuter"] === true);
@@ -42,16 +42,18 @@ export default function Generator(string) {
         return displays;
       }
       main = main.concat(converterOutput);
-      let name = outer[i]['string'].match(re);
-      name = name[0].replaceAll('(', '{').replaceAll(')', '}');
-      header = header.concat(`operations[${i}] = {name: "\\${name}", results: []};\nanswers[${i}] = 0;\n`)
+      header = header.concat(`operations[${i}] = [], answers[${i}] = 0;\n`)
     }
-    stringScript = `${header}${main} \nvar res = ${string}`;
+    stringScript = `${header}${main} \n` +
+    `var res = ${string} \n` +
+    `res = Math.round(res*100)/100;`;
   }
   else {
-    stringScript = `var res = ${string};`;
+    stringScript = `var res = ${string}; \n` +
+    `res = Math.round(res*100)/100;`;
   }
 
+  console.log(stringScript);
   reload(stringScript);
   // A check for whether the code errored or not
   if (typeof(error) === "string") {
@@ -77,7 +79,7 @@ export default function Generator(string) {
 
 // Recursive function for converting a n-layered latex string to n number of for loops
 function converter(Objects, outerObjects, i) {
-  var varName; var varInitial; var innerHeader = ""; 
+  var varName; var varInitial;
   var recurse;
   var res;
 
@@ -106,19 +108,15 @@ function converter(Objects, outerObjects, i) {
 
   // Creation of for loop as well as basis and recursive step
   if (recurse.length) {
-    res = `${innerHeader}
-    for (let ${varName} = ${varInitial}; ${varName} <= ${upper[upper.length - 1]}; ${varName}++)
-    {
-      ${converter(Objects, recurse, 0)}
-    }`
+    res = `for (let ${varName} = ${varInitial}; ${varName} <= ${upper[upper.length - 1]}; ${varName}++) { \n` +
+      `${converter(Objects, recurse, 0)}` +
+    `} \n`
   }
   else {
-    res = `${innerHeader}
-    for (let ${varName} = ${varInitial}; ${varName} <= ${upper[upper.length - 1]}; ${varName}++)
-    {
-      operations[${i}]["results"].push(${outerObjects[i]["exp"]});
-      answers[${i}] += ${outerObjects[i]["exp"]};
-    }`
+    res = `for (let ${varName} = ${varInitial}; ${varName} <= ${upper[upper.length - 1]}; ${varName}++) { \n` +
+      `operations[${i}].push(${outerObjects[i]["exp"]}); \n` +
+      `answers[${i}] += ${outerObjects[i]["exp"]}; \n` +
+    `} \n`
   }
   return res;
 }
