@@ -45,7 +45,7 @@ export default function Generator(string) {
       header = header.concat(`operations[${i}] = [], answers[${i}] = 0;\n`)
     }
     stringScript = `${header}${main} \n` +
-    `var res = ${string} \n` +
+    `var res = ${string}; \n` +
     `res = Math.round(res*100)/100;`;
   }
   else {
@@ -53,7 +53,6 @@ export default function Generator(string) {
     `res = Math.round(res*100)/100;`;
   }
 
-  console.log(stringScript);
   reload(stringScript);
   // A check for whether the code errored or not
   if (typeof(error) === "string") {

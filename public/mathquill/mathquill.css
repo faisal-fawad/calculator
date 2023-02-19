@@ -46,6 +46,7 @@
   border-color: #709AC0;
   border-radius: 1px;
 } */
+
 .mq-math-mode .mq-editable-field {
   margin: 1px;
 }
@@ -127,6 +128,10 @@
 }
 .mq-math-mode .mq-empty {
   background: #ccc;
+}
+/* Added for background */
+.math .mq-empty {
+  background: transparent !important;
 }
 .mq-math-mode .mq-empty.mq-root-block {
   background: transparent;

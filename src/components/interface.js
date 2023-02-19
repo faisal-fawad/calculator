@@ -5,8 +5,8 @@ import styles from '../styles/interface.module.css'
 export default function Interface() {
   var MQ = window.MQ;
   const field = useRef();
-  const [buttons, setButtons] = useState([<button key={-1}>Result</button>]);
-  const [output, setOutput] = useState("Click calculate!");
+  const [buttons, setButtons] = useState([<button key={-1}>{"Result"}</button>]);
+  const [output, setOutput] = useState(<pre><code>{"Enter an expression!"}</code></pre>);
 
   // On mount
   useEffect(() => {
@@ -21,27 +21,28 @@ export default function Interface() {
   function handler() {
     let res = Generator(field.current.latex());
     if (res === -1) {
-      return -1;
+      setButtons(() => [<button key={-1}>{"Result"}</button>]);
+      setOutput(() => <pre><code>{"Enter an expression!"}</code></pre>);
     }
-
-    let buttons = [];
-
-    for (var i = 0; i < res.length; i++) {
-      let data = res[i]["data"];
-      if (data) {
-        buttons.push(
-          <button key={i} onClick={() => { setOutput(<pre><code>{data}</code></pre>); }}>{res[i]["name"]}</button>
-        )
+    else {
+      let buttons = [];
+      for (var i = 0; i < res.length; i++) {
+        let data = res[i]["data"];
+        if (data) {
+          buttons.push(
+            <button key={i} onClick={() => { setOutput(<pre><code>{data}</code></pre>); }}>{res[i]["name"]}</button>
+          )
+        }
+        // No data indicates a border
+        else {
+          buttons.push(
+            <div key={i} style={{width: "5px", background: "transparent", cursor: "pointer"}}></div>
+          )
+        }
       }
-      // No data indicates a border
-      else {
-        buttons.push(
-          <div key={i} style={{width: "5px", background: "transparent", cursor: "pointer"}}></div>
-        )
-      }
+      setButtons(() => buttons);
+      setOutput(() => <pre><code>{res[0]["data"]}</code></pre>);
     }
-    setButtons(() => buttons);
-    setOutput(() => <pre><code>{res[0]["data"]}</code></pre>);
   }
 
   return (

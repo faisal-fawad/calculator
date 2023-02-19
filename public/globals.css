@@ -4,13 +4,14 @@ body {
   font-family: 'Inter', 'sans-serif';
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 :root {
   --neutral-color: rgb(235, 235, 235);
-  --red-color: rgb(165, 65, 65);
-  --red-hover-color: rgba(165, 65, 65, 0.95);
+  --red-color: rgb(165, 75, 75);
+  --red-hover-color: rgb(150, 60, 60);
   --green-color: rgb(65, 165, 65);
-  --green-hover-color: rgba(65, 165, 65, 0.95);
+  --green-hover-color: rgb(50, 150, 50);
   --code-color: rgb(50, 50, 50);
 }
