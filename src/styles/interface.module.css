@@ -19,6 +19,10 @@
   transition: background-color .2s ease;
 }
 
+.buttons button:focus {
+  outline: none;
+}
+
 .buttons button:hover {
   background-color: var(--green-hover-color);
   transition: background-color .2s ease;
@@ -96,9 +100,7 @@
 }
 
 .output pre::-webkit-scrollbar-track, .input::-webkit-scrollbar-track {
-  background: var(--code-color);
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  background: transparent;
 }
 
 .output pre::-webkit-scrollbar-thumb {

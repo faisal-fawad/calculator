@@ -72,7 +72,6 @@ export default function Generator(string) {
     {name: "", data: ""},
     {name: "Script", data: stringScript}
   )
-
   return displays
 }
 

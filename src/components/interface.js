@@ -28,7 +28,7 @@ export default function Interface() {
       let buttons = [];
       for (var i = 0; i < res.length; i++) {
         let data = res[i]["data"];
-        if (data) {
+        if (res[i]["name"]) {
           buttons.push(
             <button key={i} onClick={() => { setOutput(<pre><code>{data}</code></pre>); }}>{res[i]["name"]}</button>
           )
@@ -47,7 +47,11 @@ export default function Interface() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.input_container}>
+      <div className={styles.input_container} onKeyUp={(e) => {
+        if (e.key === 'Enter') {
+          handler();
+        }
+      }}>
         <div className={styles.input} id="input"></div>
         <div className={styles.buttons}>
           <button id="sum" onClick={() => field.current.write('\\sum_{i=0}^{n}\\left(i\\right)')}>{'\\sum_{i=0}^{n}(i)'}</button>
