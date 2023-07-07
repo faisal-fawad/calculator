@@ -4,6 +4,7 @@
 - Parses a LateX string using regular expression
 - Generates a script (.js) which holds the mathematical result in a variable named `res`
 - Randomly generates a background of math symbols on reload
+- Supports basic trigonometric (`sin`, `cos`, `tan`) functions and mathematical operations (`+`, `-`, `/`, `*`, `**`)
 
 ### Some screenshots:
 <img alt="Image of calculator" src="./images/RESULT1.PNG">
