@@ -1,9 +1,9 @@
 ## A [calculator](https://faisal-fawad.github.io/calculator) built in React with key emphasis on summations
 
 ### This app...
-- Parses a LateX string using regex
-- Generates a script which holds the mathematical result
-- Randomly generates a background of math symbols every reload
+- Parses a LateX string using regular expression
+- Generates a script (.js) which holds the mathematical result in a variable named `res`
+- Randomly generates a background of math symbols on reload
 
 ### Some screenshots:
 <img alt="Image of calculator" src="./images/RESULT1.PNG">
